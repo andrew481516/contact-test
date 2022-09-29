@@ -46,7 +46,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
+    
+    func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        openAddScreen()
+    }
 
+    func openAddScreen() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        controller.openFromAction = true
+        let navController = UINavigationController(rootViewController: controller)
+        window?.rootViewController = navController
+        window?.makeKeyAndVisible()
+    }
 
 }
 

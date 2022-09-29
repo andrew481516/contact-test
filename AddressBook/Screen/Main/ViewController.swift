@@ -34,22 +34,27 @@ class ViewController: UIViewController, UISearchBarDelegate, UpdateMainViewConta
     private var phone = String()
     private var fax = String()
     
+    var openFromAction = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         parseXML()
         setupUI()
+        if openFromAction {
+            openAddScreen()
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        guard let appDelegate  = UIApplication.shared.delegate as? AppDelegate,
+              let _ = appDelegate.launchedShortcutItem
+                else { return }
+        openAddScreen()
     }
 
     @IBAction private func addAction(_ sender: UIBarButtonItem) {
-        guard let vc = UIStoryboard(name: "EditContact", bundle: nil).instantiateViewController(withIdentifier: "EditContactViewController") as? EditContactViewController else {
-            return
-        }
-        vc.contact = Contact(customerID: "", companyName: "", contactName: "", contactTitle: "", address: "", city: "", email: "", postalCode: "", country: "", phone: "", fax: "")
-        vc.openFromMain = true
-        vc.delegate = self
-        let navController = UINavigationController(rootViewController: vc)
-
-        navigationController?.present(navController, animated: true, completion: nil)
+        openAddScreen()
     }
     
     @IBAction func filterAction(_ sender: UIBarButtonItem) {
@@ -84,6 +89,18 @@ class ViewController: UIViewController, UISearchBarDelegate, UpdateMainViewConta
         self.tableView.delegate = self
         self.tableView.dataSource = self
         tableView.register(cellType: ContactTableViewCell.self)
+    }
+    
+    func openAddScreen() {
+        guard let vc = UIStoryboard(name: "EditContact", bundle: nil).instantiateViewController(withIdentifier: "EditContactViewController") as? EditContactViewController else {
+            return
+        }
+        vc.contact = Contact(customerID: "", companyName: "", contactName: "", contactTitle: "", address: "", city: "", email: "", postalCode: "", country: "", phone: "", fax: "")
+        vc.openFromMain = true
+        vc.delegate = self
+        let navController = UINavigationController(rootViewController: vc)
+
+        navigationController?.present(navController, animated: true, completion: nil)
     }
     
     private func parseXML() {

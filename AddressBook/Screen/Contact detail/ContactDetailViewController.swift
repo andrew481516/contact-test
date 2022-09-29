@@ -72,8 +72,6 @@ class ContactDetailViewController: UIViewController, UpdateDetailViewContactDele
         phone.addGestureRecognizer(tap)
     }
     
-    
-    
     func addEmainSend() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(emailTap))
         email.isUserInteractionEnabled = true
@@ -105,7 +103,6 @@ class ContactDetailViewController: UIViewController, UpdateDetailViewContactDele
             
             present(mail, animated: true)
         } else {
-            // show failure alert
             print("show failure alert")
         }
     }
